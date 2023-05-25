@@ -1,0 +1,113 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "mongoproducts-delete",
+		"description": "Delete mongo/products by ID"
+	},
+	"parameter": {
+		"properties": {
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false,
+		"required": [
+			"request",
+			"config",
+			"env"
+		]
+	},
+	"start": "model.delete",
+	"nodes": {
+		"model.delete": {
+			"type": "nodehandler://api-builder-flow-invoke/model/mongo/products",
+			"method": "delete",
+			"name": "Delete products",
+			"parameters": [
+				{
+					"name": "id",
+					"value": "$.request.path.id"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.delete",
+					"routes": [
+						"response.success"
+					]
+				},
+				"notfound": {
+					"routes": [
+						"response.error.notfound"
+					]
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [
+						"response.error"
+					]
+				}
+			}
+		},
+		"response.success": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Success (HTTP 200)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "204",
+					"type": "number"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		},
+		"response.error.notfound": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Not Found (HTTP 404)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "404",
+					"type": "number"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		},
+		"response.error": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Bad Request (HTTP 400)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "400",
+					"type": "number"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		}
+	}
+}

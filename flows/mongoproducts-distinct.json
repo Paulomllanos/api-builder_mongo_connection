@@ -1,0 +1,111 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "mongoproducts-distinct",
+		"description": "Get distinct records of mongo/products"
+	},
+	"parameter": {
+		"properties": {
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false,
+		"required": [
+			"request",
+			"config",
+			"env"
+		]
+	},
+	"start": "model.distinct",
+	"nodes": {
+		"model.distinct": {
+			"type": "nodehandler://api-builder-flow-invoke/model/mongo/products",
+			"method": "distinct",
+			"name": "Find distinct products",
+			"parameters": [
+				{
+					"name": "limit",
+					"value": "$.request.query.limit"
+				},
+				{
+					"name": "skip",
+					"value": "$.request.query.skip"
+				},
+				{
+					"name": "where",
+					"value": "$.request.query.where"
+				},
+				{
+					"name": "order",
+					"value": "$.request.query.order"
+				},
+				{
+					"name": "field",
+					"value": "$.request.path.field"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.models",
+					"routes": [
+						"response.success"
+					]
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [
+						"response.error"
+					]
+				}
+			}
+		},
+		"response.success": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Success (HTTP 200)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "200",
+					"type": "number"
+				},
+				{
+					"name": "body",
+					"value": "$.models"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		},
+		"response.error": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Bad Request (HTTP 400)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "400",
+					"type": "number"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		}
+	}
+}

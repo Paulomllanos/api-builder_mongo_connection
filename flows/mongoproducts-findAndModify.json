@@ -1,0 +1,179 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "mongoproducts-findAndModify",
+		"description": "Find and modify mongo/products"
+	},
+	"parameter": {
+		"properties": {
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false,
+		"required": [
+			"request",
+			"config",
+			"env"
+		]
+	},
+	"start": "params.buildargs.1",
+	"nodes": {
+		"params.buildargs.1": {
+			"type": "nodehandler://axway-flow/setcontext",
+			"method": "setcontext",
+			"name": "Build args parameter (new)",
+			"parameters": [
+				{
+					"name": "value",
+					"value": "$.request.query.new"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.upsertArgs.new",
+					"routes": [
+						"params.buildargs.2"
+					]
+				}
+			}
+		},
+		"params.buildargs.2": {
+			"type": "nodehandler://axway-flow/setcontext",
+			"method": "setcontext",
+			"name": "Build args parameter (upsert)",
+			"parameters": [
+				{
+					"name": "value",
+					"value": "$.request.query.upsert"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.upsertArgs.upsert",
+					"routes": [
+						"model.findAndModify"
+					]
+				}
+			}
+		},
+		"model.findAndModify": {
+			"type": "nodehandler://api-builder-flow-invoke/model/mongo/products",
+			"method": "findAndModify",
+			"name": "Find and modify products",
+			"parameters": [
+				{
+					"name": "data",
+					"value": "$.request.body"
+				},
+				{
+					"name": "args",
+					"value": "$.upsertArgs"
+				},
+				{
+					"name": "limit",
+					"value": "$.request.query.limit"
+				},
+				{
+					"name": "skip",
+					"value": "$.request.query.skip"
+				},
+				{
+					"name": "where",
+					"value": "$.request.query.where"
+				},
+				{
+					"name": "order",
+					"value": "$.request.query.order"
+				},
+				{
+					"name": "sel",
+					"value": "$.request.query.sel"
+				},
+				{
+					"name": "unsel",
+					"value": "$.request.query.unsel"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.model",
+					"routes": [
+						"response.success"
+					]
+				},
+				"notfound": {
+					"routes": [
+						"response.error.notfound"
+					]
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [
+						"response.error"
+					]
+				}
+			}
+		},
+		"response.success": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Success (HTTP 200)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "204",
+					"type": "number"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		},
+		"response.error.notfound": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Not Found (HTTP 404)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "404",
+					"type": "number"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		},
+		"response.error": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Bad Request (HTTP 400)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "400",
+					"type": "number"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		}
+	}
+}

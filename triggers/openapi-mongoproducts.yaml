@@ -1,0 +1,122 @@
+triggers:
+  openapi-mongoproducts-1:
+    name: getProducts
+    parameters:
+      method: getProducts
+    enabled: true
+    invoke:
+      flow: mongoproducts-findAll
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-2:
+    name: deleteProducts
+    parameters:
+      method: deleteProducts
+    enabled: true
+    invoke:
+      flow: mongoproducts-deleteAll
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-3:
+    name: getProductsCount
+    parameters:
+      method: getProductsCount
+    enabled: true
+    invoke:
+      flow: mongoproducts-count
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-4:
+    name: getProductsQuery
+    parameters:
+      method: getProductsQuery
+    enabled: true
+    invoke:
+      flow: mongoproducts-query
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-5:
+    name: postProductsUpsert
+    parameters:
+      method: postProductsUpsert
+    enabled: true
+    invoke:
+      flow: mongoproducts-upsert
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-6:
+    name: putProductsFindAndModify
+    parameters:
+      method: putProductsFindAndModify
+    enabled: true
+    invoke:
+      flow: mongoproducts-findAndModify
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-7:
+    name: getProductsDistinctField
+    parameters:
+      method: getProductsDistinctField
+    enabled: true
+    invoke:
+      flow: mongoproducts-distinct
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-8:
+    name: postProducts
+    parameters:
+      method: postProducts
+    enabled: true
+    invoke:
+      flow: mongoproducts-create
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-9:
+    name: getProductsId
+    parameters:
+      method: getProductsId
+    enabled: true
+    invoke:
+      flow: mongoproducts-findByID
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-10:
+    name: putProductsId
+    parameters:
+      method: putProductsId
+    enabled: true
+    invoke:
+      flow: mongoproducts-update
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env
+  openapi-mongoproducts-11:
+    name: deleteProductsId
+    parameters:
+      method: deleteProductsId
+    enabled: true
+    invoke:
+      flow: mongoproducts-delete
+      parameters:
+        request: $.request
+        config: $.config
+        env: $.env

@@ -1,0 +1,656 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "mongo/products",
+		"description": "The mongo/products REST API",
+		"version": "1.0.0"
+	},
+	"basePath": "/endpoints",
+	"paths": {
+		"/products": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The find all succeeded, and the results are available.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/products-full"
+							}
+						}
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Find all mongo/products",
+				"operationId": "getProducts",
+				"consumes": [],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			},
+			"delete": {
+				"responses": {
+					"204": {
+						"description": "The delete succeeded."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Deletes all mongo/productss",
+				"operationId": "deleteProducts",
+				"consumes": [],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			},
+			"post": {
+				"responses": {
+					"201": {
+						"description": "The create succeeded.",
+						"headers": {
+							"Location": {
+								"description": "The URL to the newly created instance.",
+								"type": "string"
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Create a mongo/products",
+				"operationId": "postProducts",
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"description": "Create body",
+						"schema": {
+							"$ref": "#/definitions/products"
+						}
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			}
+		},
+		"/products/count": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The count succeeded, and the results are available.",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Count a mongo/products",
+				"operationId": "getProductsCount",
+				"consumes": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "where",
+						"description": "Constrains values for fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			}
+		},
+		"/products/query": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The query succeeded, and the results are available.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/products-full"
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Query a mongo/products",
+				"operationId": "getProductsQuery",
+				"consumes": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"description": "The number of records to fetch. The value must be greater than 0, and no greater than 1000.",
+						"required": false,
+						"type": "number",
+						"minimum": 0,
+						"maximum": 1000
+					},
+					{
+						"in": "query",
+						"name": "skip",
+						"description": "The number of records to skip. The value must not be less than 0.",
+						"required": false,
+						"type": "number",
+						"minimum": 0
+					},
+					{
+						"in": "query",
+						"name": "where",
+						"description": "Constrains values for fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"description": "A dictionary of one or more fields specifying sorting of results. In general, you can sort based on any predefined field that you can query using the where operator, as well as on custom fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "sel",
+						"description": "A JSON encoded dictionary of key-value pairs describing which fields to include in the query results. The field name is the key and the value is set to 1.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "unsel",
+						"description": "A dictionary of key-value pairs describing which fields to exclude in the query results. The field name is the key and the value is set to 1.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			}
+		},
+		"/products/upsert": {
+			"post": {
+				"responses": {
+					"201": {
+						"description": "The upsert succeeded, and resulted in an insert.",
+						"headers": {
+							"Location": {
+								"description": "The URL to the newly created instance.",
+								"type": "string"
+							}
+						}
+					},
+					"204": {
+						"description": "The upsert succeeded, and resulted in an update."
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Create or update a mongo/products",
+				"operationId": "postProductsUpsert",
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"description": "Upsert body",
+						"schema": {
+							"$ref": "#/definitions/products-full"
+						}
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			}
+		},
+		"/products/findAndModify": {
+			"put": {
+				"responses": {
+					"204": {
+						"description": "The find and modify succeeded."
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Modifies a single mongo/product. Although the query may match multiple mongo/products, only the first one will be modified.",
+				"operationId": "putProductsFindAndModify",
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "data",
+						"in": "body",
+						"description": "Find and modify body",
+						"schema": {
+							"$ref": "#/definitions/products"
+						}
+					},
+					{
+						"name": "upsert",
+						"in": "query",
+						"type": "boolean",
+						"description": "Set to true to allow the method to create a new model."
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"description": "The number of records to fetch. The value must be greater than 0, and no greater than 1000.",
+						"required": false,
+						"type": "number",
+						"minimum": 0,
+						"maximum": 1000
+					},
+					{
+						"in": "query",
+						"name": "skip",
+						"description": "The number of records to skip. The value must not be less than 0.",
+						"required": false,
+						"type": "number",
+						"minimum": 0
+					},
+					{
+						"in": "query",
+						"name": "where",
+						"description": "Constrains values for fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"description": "A dictionary of one or more fields specifying sorting of results. In general, you can sort based on any predefined field that you can query using the where operator, as well as on custom fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "sel",
+						"description": "A JSON encoded dictionary of key-value pairs describing which fields to include in the query results. The field name is the key and the value is set to 1.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "unsel",
+						"description": "A dictionary of key-value pairs describing which fields to exclude in the query results. The field name is the key and the value is set to 1.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			}
+		},
+		"/products/distinct/{field}": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "Distinct fields response",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/products-ex"
+							},
+							"uniqueItems": true
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Gets a distinct set of `field` value(s) from the mongo/products collection",
+				"operationId": "getProductsDistinctField",
+				"consumes": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "field",
+						"description": "The field name that must be distinct.",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"description": "The number of records to fetch. The value must be greater than 0, and no greater than 1000.",
+						"required": false,
+						"type": "number",
+						"minimum": 0,
+						"maximum": 1000
+					},
+					{
+						"in": "query",
+						"name": "skip",
+						"description": "The number of records to skip. The value must not be less than 0.",
+						"required": false,
+						"type": "number",
+						"minimum": 0
+					},
+					{
+						"in": "query",
+						"name": "where",
+						"description": "Constrains values for fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"description": "A dictionary of one or more fields specifying sorting of results. In general, you can sort based on any predefined field that you can query using the where operator, as well as on custom fields. The value should be encoded JSON.",
+						"required": false,
+						"type": "string",
+						"format": "json"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			}
+		},
+		"/products/{id}": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The find succeeded, and the results are available.",
+						"schema": {
+							"$ref": "#/definitions/products-full"
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Find one mongo/products",
+				"operationId": "getProductsId",
+				"consumes": [],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The mongo/products ID",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			},
+			"put": {
+				"responses": {
+					"204": {
+						"description": "The update succeeded."
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Update a mongo/products",
+				"operationId": "putProductsId",
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The mongo/products ID",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "data",
+						"in": "body",
+						"description": "Update body",
+						"schema": {
+							"$ref": "#/definitions/products"
+						}
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			},
+			"delete": {
+				"responses": {
+					"204": {
+						"description": "The delete succeeded."
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"summary": "Delete a specific mongo/products",
+				"operationId": "deleteProductsId",
+				"consumes": [],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "The mongo/products ID",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mongo/products"
+				]
+			}
+		}
+	},
+	"definitions": {
+		"products": {
+			"type": "object",
+			"properties": {
+				"SKU": {
+					"type": "string"
+				},
+				"__v": {
+					"type": "number"
+				},
+				"description": {
+					"type": "object",
+					"additionalProperties": true
+				},
+				"image": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"price": {
+					"type": "number"
+				},
+				"stock": {
+					"type": "number"
+				}
+			},
+			"additionalProperties": false
+		},
+		"products-ex": {
+			"type": "object",
+			"properties": {
+				"SKU": {
+					"type": "string"
+				},
+				"__v": {
+					"type": "number"
+				},
+				"description": {
+					"type": "object",
+					"additionalProperties": true
+				},
+				"image": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"price": {
+					"type": "number"
+				},
+				"stock": {
+					"type": "number"
+				}
+			}
+		},
+		"products-full": {
+			"type": "object",
+			"properties": {
+				"SKU": {
+					"type": "string"
+				},
+				"__v": {
+					"type": "number"
+				},
+				"description": {
+					"type": "object",
+					"additionalProperties": true
+				},
+				"image": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"price": {
+					"type": "number"
+				},
+				"stock": {
+					"type": "number"
+				},
+				"id": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"id"
+			],
+			"additionalProperties": false
+		}
+	}
+}
